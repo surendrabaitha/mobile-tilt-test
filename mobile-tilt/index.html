@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tilt Chocolate Rotation</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      .section {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.1s linear;
+      }
+      .top {
+        background-color: #f8d568;
+      }
+      .bottom {
+        background-color: #8b5a2b;
+      }
+      img {
+        width: 150px;
+        height: auto;
+        transition: transform 0.1s linear;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section top">
+      <img id="choco1" src="chocolate.png" alt="Chocolate 1" />
+    </div>
+    <div class="section bottom">
+      <img id="choco2" src="chocolate.png" alt="Chocolate 2" />
+    </div>
+    <script>
+      window.addEventListener("deviceorientation", (event) => {
+        let tiltX = event.gamma; // Left/Right
+        let tiltY = event.beta; // Forward/Backward
+
+        // Rotate chocolates based on tilt
+        document.getElementById(
+          "choco1"
+        ).style.transform = `rotate(${tiltX}deg)`;
+        document.getElementById(
+          "choco2"
+        ).style.transform = `rotate(${-tiltX}deg)`;
+      });
+    </script>
+  </body>
+</html>
