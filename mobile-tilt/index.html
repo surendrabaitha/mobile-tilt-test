@@ -1,76 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tilt Chocolate Effect</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilt Chocolate Swap Effect</title>
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        display: flex;
-        flex-direction: row;
-        height: 100vh;
-        width: 100vw;
-      }
-      .section {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: transform 0.1s linear;
-      }
-      .left {
-        background-color: #f8d568;
-      }
-      .right {
-        background-color: #8b5a2b;
-      }
-      img {
-        width: 150px;
-        height: auto;
-        transition: transform 0.1s linear;
-      }
-      .shake {
-        animation: shake 0.2s infinite alternate;
-      }
-      @keyframes shake {
-        0% {
-          transform: scale(1.2) rotate(-2deg);
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            width: 100vw;
+            justify-content: center;
+            align-items: center;
         }
-        100% {
-          transform: scale(1.2) rotate(2deg);
+        .container {
+            display: flex;
+            width: 80%;
+            justify-content: space-between;
+            align-items: center;
         }
-      }
+        .section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .left {
+            background-color: #f8d568;
+        }
+        .right {
+            background-color: #8b5a2b;
+        }
+        img {
+            width: 150px;
+            height: auto;
+            transition: transform 0.2s ease-in-out;
+        }
+        .shake {
+            animation: shake 0.2s infinite alternate;
+        }
+        @keyframes shake {
+            0% { transform: scale(1.2) rotate(-2deg); }
+            100% { transform: scale(1.2) rotate(2deg); }
+        }
     </style>
-  </head>
-  <body>
-    <div class="section left">
-      <img id="choco1" src="chocolate.png" alt="Chocolate 1" />
-    </div>
-    <div class="section right">
-      <img id="choco2" src="chocolate.png" alt="Chocolate 2" />
+</head>
+<body>
+    <div class="container">
+        <div class="section left" id="leftSection">
+            <img id="choco1" src="chocolate.png" alt="Chocolate 1">
+        </div>
+        <div class="section right" id="rightSection">
+            <img id="choco2" src="chocolate.png" alt="Chocolate 2">
+        </div>
     </div>
     <script>
-      window.addEventListener("deviceorientation", (event) => {
-        let tiltX = event.gamma; // Left/Right
-
+        let leftSection = document.getElementById("leftSection");
+        let rightSection = document.getElementById("rightSection");
         let choco1 = document.getElementById("choco1");
         let choco2 = document.getElementById("choco2");
 
-        if (tiltX < -10) {
-          // Tilt left
-          choco1.classList.add("shake");
-          choco2.classList.remove("shake");
-        } else if (tiltX > 10) {
-          // Tilt right
-          choco2.classList.add("shake");
-          choco1.classList.remove("shake");
-        } else {
-          choco1.classList.remove("shake");
-          choco2.classList.remove("shake");
-        }
-      });
+        window.addEventListener("deviceorientation", (event) => {
+            let tiltX = event.gamma; // Left/Right
+
+            if (tiltX < -10) { // Tilt left
+                let newChoco = choco1.cloneNode(true);
+                leftSection.appendChild(newChoco);
+                choco2.style.opacity = "0";
+            } else if (tiltX > 10) { // Tilt right
+                rightSection.innerHTML = ''; // Clear right section
+                rightSection.appendChild(choco2);
+                choco2.style.opacity = "1";
+            }
+        });
     </script>
-  </body>
+</body>
 </html>
