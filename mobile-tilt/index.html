@@ -3,14 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tilt Chocolate Rotation</title>
+    <title>Tilt Chocolate Effect</title>
     <style>
       body {
         margin: 0;
         overflow: hidden;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         height: 100vh;
+        width: 100vw;
       }
       .section {
         flex: 1;
@@ -19,10 +20,10 @@
         align-items: center;
         transition: transform 0.1s linear;
       }
-      .top {
+      .left {
         background-color: #f8d568;
       }
-      .bottom {
+      .right {
         background-color: #8b5a2b;
       }
       img {
@@ -30,27 +31,45 @@
         height: auto;
         transition: transform 0.1s linear;
       }
+      .shake {
+        animation: shake 0.2s infinite alternate;
+      }
+      @keyframes shake {
+        0% {
+          transform: scale(1.2) rotate(-2deg);
+        }
+        100% {
+          transform: scale(1.2) rotate(2deg);
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="section top">
+    <div class="section left">
       <img id="choco1" src="chocolate.png" alt="Chocolate 1" />
     </div>
-    <div class="section bottom">
+    <div class="section right">
       <img id="choco2" src="chocolate.png" alt="Chocolate 2" />
     </div>
     <script>
       window.addEventListener("deviceorientation", (event) => {
         let tiltX = event.gamma; // Left/Right
-        let tiltY = event.beta; // Forward/Backward
 
-        // Rotate chocolates based on tilt
-        document.getElementById(
-          "choco1"
-        ).style.transform = `rotate(${tiltX}deg)`;
-        document.getElementById(
-          "choco2"
-        ).style.transform = `rotate(${-tiltX}deg)`;
+        let choco1 = document.getElementById("choco1");
+        let choco2 = document.getElementById("choco2");
+
+        if (tiltX < -10) {
+          // Tilt left
+          choco1.classList.add("shake");
+          choco2.classList.remove("shake");
+        } else if (tiltX > 10) {
+          // Tilt right
+          choco2.classList.add("shake");
+          choco1.classList.remove("shake");
+        } else {
+          choco1.classList.remove("shake");
+          choco2.classList.remove("shake");
+        }
       });
     </script>
   </body>
