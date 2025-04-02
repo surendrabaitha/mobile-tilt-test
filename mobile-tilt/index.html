@@ -1,81 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tilt Chocolate Swap Effect</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tilt Chocolate Move Effect</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: row;
-            height: 100vh;
-            width: 100vw;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            display: flex;
-            width: 80%;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .left {
-            background-color: #f8d568;
-        }
-        .right {
-            background-color: #8b5a2b;
-        }
-        img {
-            width: 150px;
-            height: auto;
-            transition: transform 0.2s ease-in-out;
-        }
-        .shake {
-            animation: shake 0.2s infinite alternate;
-        }
-        @keyframes shake {
-            0% { transform: scale(1.2) rotate(-2deg); }
-            100% { transform: scale(1.2) rotate(2deg); }
-        }
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f8d568;
+      }
+      .container {
+        position: relative;
+        width: 80vw;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      img {
+        position: absolute;
+        width: 150px;
+        height: auto;
+        transition: transform 0.3s ease-in-out;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="section left" id="leftSection">
-            <img id="choco1" src="chocolate.png" alt="Chocolate 1">
-        </div>
-        <div class="section right" id="rightSection">
-            <img id="choco2" src="chocolate.png" alt="Chocolate 2">
-        </div>
+      <img id="choco" src="chocolate.png" alt="Chocolate" />
     </div>
     <script>
-        let leftSection = document.getElementById("leftSection");
-        let rightSection = document.getElementById("rightSection");
-        let choco1 = document.getElementById("choco1");
-        let choco2 = document.getElementById("choco2");
+      let choco = document.getElementById("choco");
+      let centerX = window.innerWidth / 2;
 
-        window.addEventListener("deviceorientation", (event) => {
-            let tiltX = event.gamma; // Left/Right
+      window.addEventListener("deviceorientation", (event) => {
+        let tiltX = event.gamma; // Left/Right
 
-            if (tiltX < -10) { // Tilt left
-                let newChoco = choco1.cloneNode(true);
-                leftSection.appendChild(newChoco);
-                choco2.style.opacity = "0";
-            } else if (tiltX > 10) { // Tilt right
-                rightSection.innerHTML = ''; // Clear right section
-                rightSection.appendChild(choco2);
-                choco2.style.opacity = "1";
-            }
-        });
+        if (tiltX < -10) {
+          // Move left
+          choco.style.transform = `translateX(-100px)`;
+        } else if (tiltX > 10) {
+          // Move right
+          choco.style.transform = `translateX(100px)`;
+        } else {
+          // Center position
+          choco.style.transform = `translateX(0px)`;
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
